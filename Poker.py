@@ -1,3 +1,5 @@
+import json
+
 class Player:
     sittingOut = False
     hasFolded = False
@@ -10,12 +12,15 @@ class Player:
 class Hand:
     cards = []
 
-    def __init__(self, card1, card2):
+    def __init__(self, card1, card2, communityCards, playerCards, actionsByStreet):
         self.cards.append(card1)
         self.cards.append(card2)
+        self.communityCards = communityCards
+        self.playerCards = playerCards
+        self.actionsByStreet = actionsByStreet
 
-    def toString(self):
-        return f"{self.cards[0]} {self.cards[1]}"
+    def toJson(self):
+        return json.dumps(self, default=lambda obj: obj.__dict__)
 
 class Action:
     def __init__(self, playerName, action):

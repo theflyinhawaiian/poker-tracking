@@ -72,19 +72,23 @@ def showActionsByStreet(streetActions):
                 print(action.toString())
         count = count + 1
 
+def writeToFile(hand):
+    f = open("handHistories.txt", "a")
+    f.write("," + hand.toJson())
+    f.close()
+
 def trackHand():
     global buttonPlayerIdx, maxPlayers, players
     holeCard1 = input("Input first hole card: ")
     holeCard2 = input("Input second hole card: ")
     startingPlayerIdx = int(input("Which seat is UTG? ")) - 1
 
-    hand = Hand(holeCard1, holeCard2)
     communityCards = []
     actionsByStreet = []
     playerHands = []
     for player in players:
-        if(not player.sittingOut):
-            player.hasFolded = False
+        player.hasFolded = False
+        player.sittingOut = False
 
     for i in range(numStreets):
         cont = True
@@ -121,10 +125,7 @@ def trackHand():
         if(not (player.hasFolded or player.sittingOut or player.isSelf)):
             playerHands.append(input(f"Input {player.name}'s cards, separated by spaces: ").split())
 
-    print("Your hand: " + hand.toString())
-    print(communityCards)
-    print(playerHands)
-    showActionsByStreet(actionsByStreet)
+    writeToFile(Hand(holeCard1, holeCard2, communityCards, playerHands, actionsByStreet))
 
 def processInput(cmd):
     if(cmd == "1"):
